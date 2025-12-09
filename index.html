@@ -12,7 +12,7 @@
         }
         .container {
             background: #ffffff;
-            max-width: 700px;
+            max-width: 750px;
             margin: auto;
             padding: 25px;
             border-radius: 8px;
@@ -51,19 +51,41 @@
         .btn:hover {
             background-color: #003d80;
         }
+
+        /* Success Page Styles */
+        #successBox {
+            display: none;
+            text-align: center;
+            color: #003d80;
+        }
+        #successBox img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            border: 3px solid #003d80;
+            margin-top: 10px;
+        }
+        .info-box {
+            font-size: 18px;
+            margin-top: 15px;
+            background: #eef6ff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="formContainer">
     <h2>Student Registration Form</h2>
 
-    <form>
-        <label>Roll Number</label>
-        <input type="text" required>
+    <form onsubmit="showSuccess(event)">
+        <label>USN / Roll Number</label>
+        <input type="text" id="usn" required>
 
         <label>Student Name</label>
-        <input type="text" required>
+        <input type="text" id="studentName" required>
 
         <label>Father's Name</label>
         <input type="text" required>
@@ -89,7 +111,7 @@
         </select>
 
         <label>Department</label>
-        <select required>
+        <select id="branch" required>
             <option value="">-- Select Department --</option>
             <option>Computer Science</option>
             <option>Electronics</option>
@@ -100,7 +122,7 @@
         </select>
 
         <label>Student Photo</label>
-        <input type="file" accept="image/*" required>
+        <input type="file" accept="image/*" id="photo" required>
 
         <label>Address</label>
         <textarea required></textarea>
@@ -109,7 +131,50 @@
     </form>
 </div>
 
+<!-- SUCCESS PAGE -->
+<div class="container" id="successBox">
+    <h2>Registration Successful!</h2>
+    <p>Your details have been successfully submitted.</p>
+
+    <img id="previewImage" alt="Student Photo">
+
+    <div class="info-box">
+        <p><strong>Student Name:</strong> <span id="displayName"></span></p>
+        <p><strong>USN / Roll Number:</strong> <span id="displayUSN"></span></p>
+        <p><strong>Branch:</strong> <span id="displayBranch"></span></p>
+    </div>
+</div>
+
+<script>
+    function showSuccess(event) {
+        event.preventDefault();
+
+        // Get form values
+        const name = document.getElementById("studentName").value;
+        const usn = document.getElementById("usn").value;
+        const branch = document.getElementById("branch").value;
+
+        // Set values in success box
+        document.getElementById("displayName").innerText = name;
+        document.getElementById("displayUSN").innerText = usn;
+        document.getElementById("displayBranch").innerText = branch;
+
+        // Load uploaded image
+        const file = document.getElementById("photo").files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("previewImage").src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+
+        // Hide form and show success page
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("successBox").style.display = "block";
+    }
+</script>
+
 </body>
 </html>
+
 
 
